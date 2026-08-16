@@ -22,7 +22,7 @@ const getAll = async (departmentId) => {
 }
 
 export {
-    getDepartments,
+    // getDepartments,
     getItem,
     getAll
 }
