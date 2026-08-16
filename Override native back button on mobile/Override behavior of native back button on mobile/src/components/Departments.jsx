@@ -1,15 +1,9 @@
 import { NativeSelect, Button, Flex } from "@chakra-ui/react"
-import { useForm } from "react-hook-form";
 import { departments } from "../api/departments";
 import { useState } from "react";
 
-const Departments = () => {
+const Departments = ({register, onSubmit}) => {
     const [_, setCurDept] = useState(null);
-    const { register, handleSubmit } = useForm();
-
-    const onSubmit = handleSubmit((data) => {
-        console.log(data);
-    })
 
     return (
         <form onSubmit={onSubmit}>
@@ -28,6 +22,7 @@ const Departments = () => {
                     >
                         {departments.departments.map(({ departmentId, displayName }) => (
                             <option
+                                key={departmentId}
                                 value={departmentId}
                             >
                                 {displayName}
