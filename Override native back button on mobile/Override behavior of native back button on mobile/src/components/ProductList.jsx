@@ -4,7 +4,7 @@ import Departments from './Departments';
 import { useForm } from 'react-hook-form';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 
 const ProductList = () => {
 
@@ -36,12 +36,29 @@ const ProductList = () => {
 
     return (
         <>
+            <Heading
+                size={"4xl"}
+                fontWeight={"normal"}
+                textAlign={"center"}
+                padding={"3rem"}
+            >
+                The Metropolitan Museum of Art
+
+            </Heading>
+            <Text
+                textStyle={"md"}
+                textAlign={"center"}
+                fontWeight={"light"}
+                paddingX={"3rem"}
+            >
+                You can browse the free API here and click on link to view items on the official website for more information
+            </Text>
             <Departments
                 onSubmit={onSubmit}
                 register={register}
             />
 
-            <Flex 
+            <Flex
                 // direction={"column"}
                 gap={"2rem"}
                 wrap={"wrap"}
