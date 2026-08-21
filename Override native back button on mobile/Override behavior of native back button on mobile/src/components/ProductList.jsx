@@ -1,7 +1,7 @@
 import ProductCard from './ProductCard';
 import * as API from '../api/api';
 import Departments from './Departments';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Flex, Heading, Text } from '@chakra-ui/react';
@@ -9,7 +9,7 @@ import { Flex, Heading, Text } from '@chakra-ui/react';
 const ProductList = () => {
 
     const [deptId, setDeptId] = useState(null);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, control } = useForm();
 
     const queryClient = useQueryClient();
     const { data: itemIds, isLoading, isError } = useQuery({
@@ -56,6 +56,8 @@ const ProductList = () => {
             <Departments
                 onSubmit={onSubmit}
                 register={register}
+                Controller={Controller}
+                control={control}
             />
 
             <Flex
