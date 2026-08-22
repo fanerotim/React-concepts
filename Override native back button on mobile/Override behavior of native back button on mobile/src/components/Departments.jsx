@@ -2,6 +2,7 @@ import { Select, Button, Flex, Portal, createListCollection } from "@chakra-ui/r
 import { departments } from "../api/departments";
 
 // data needs to be converted into a ListCollection as this is how the Select Component works
+// in TypeScript we should be able to pass a type to the createListCollection based on its doc: https://ark-ui.com/docs/collections/tree-collection 
 const departmentsCollection = createListCollection({
     items: departments.departments,
     itemToString: (department) => department.displayName,
@@ -9,8 +10,6 @@ const departmentsCollection = createListCollection({
 })
 
 const Departments = ({ onSubmit, Controller, control }) => {
-    const formFields = Object.keys(control?._fields);
-
     return (
         <form onSubmit={onSubmit}>
             <Flex
@@ -22,7 +21,7 @@ const Departments = ({ onSubmit, Controller, control }) => {
             >
                 <Controller
                     control={control}
-                    name={formFields[0] ?? ''}
+                    name={"departments"}
                     render={({ field }) => (
                         <Select.Root
                             name={field.name}

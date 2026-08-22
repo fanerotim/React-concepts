@@ -18,10 +18,14 @@ const ProductList = () => {
         enabled: !!deptId,
     })
 
-    const onSubmit = handleSubmit((data) => {
-        setDeptId(() => data.department);
+    const onSubmit = handleSubmit(({departments}) => {
+        const id = departments.length && departments[0];
 
-        if (deptId !== data.department) {
+        if (!id) return;
+
+        setDeptId(() => id);
+
+        if (deptId !== id) {
             // invalidate cache when department id changes
             queryClient.invalidateQueries({ queryKey: ['itemIds'] });
         }
