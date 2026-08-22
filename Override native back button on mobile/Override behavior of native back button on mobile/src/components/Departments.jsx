@@ -1,9 +1,7 @@
 import { Select, Button, Flex, Portal, createListCollection } from "@chakra-ui/react"
 import { departments } from "../api/departments";
-import { useState } from "react";
 
-const Departments = ({ register, onSubmit, Controller, control }) => {
-    const [dept, setCurDept] = useState(null);
+const Departments = ({ onSubmit, Controller, control }) => {
 
     return (
         <form onSubmit={onSubmit}>
@@ -21,30 +19,31 @@ const Departments = ({ register, onSubmit, Controller, control }) => {
                         <Select.Root
                             name={field.name}
                             value={field.value}
-                            onValueChange={({value}) => field.onChange(value)}
+                            onValueChange={({ value }) => field.onChange(value)}
                             w={"xs"}
-                            collection={frameworks}
+                            collection={departmentsCollection}
                         >
                             <Select.Label>
                                 Choose a department
                             </Select.Label>
                             <Select.Control>
                                 <Select.Trigger>
-                                    <Select.ValueText placeholder="Select department" onChange={() => console.log('change detected')} />
+                                    <Select.ValueText placeholder="Select department" />
                                     <Select.Indicator />
                                 </Select.Trigger>
                             </Select.Control>
                             <Portal>
                                 <Select.Positioner>
                                     <Select.Content>
-                                        {frameworks.items.map((framework) => (
+                                        {departmentsCollection.items.map((department) => (
                                             <Select.Item
-                                                key={framework.value}
-                                                item={framework}
+                                                key={department.value}
+                                                item={department}
                                             >
-                                                {framework.label}
+                                                {department.label}
                                             </Select.Item>
-                                        ))}
+                                        )
+                                        )}
                                     </Select.Content>
                                 </Select.Positioner>
                             </Portal>
@@ -52,6 +51,7 @@ const Departments = ({ register, onSubmit, Controller, control }) => {
                     }
                 />
                 <Button
+                    type="submit"
                     size={"xs"}
                     alignSelf={"end"}
                 >
@@ -62,14 +62,13 @@ const Departments = ({ register, onSubmit, Controller, control }) => {
     )
 }
 
-
-const frameworks = createListCollection({
-  items: [
-    { label: "React.js", value: "react" },
-    { label: "Vue.js", value: "vue" },
-    { label: "Angular", value: "angular" },
-    { label: "Svelte", value: "svelte" },
-  ],
+const departmentsCollection = createListCollection({
+    items: departments.departments.map((department) => {
+        return {
+            label: department.displayName,
+            value: department.departmentId
+        }
+    })
 })
 
 export default Departments;
