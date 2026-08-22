@@ -1,7 +1,15 @@
 import { Select, Button, Flex, Portal, createListCollection } from "@chakra-ui/react"
 import { departments } from "../api/departments";
 
+// data needs to be converted into a ListCollection as this is how the Select Component works
+const departmentsCollection = createListCollection({
+    items: departments.departments,
+    itemToString: (department) => department.displayName,
+    itemToValue: (department) => department.departmentId
+})
+
 const Departments = ({ onSubmit, Controller, control }) => {
+    const formFields = Object.keys(control?._fields);
 
     return (
         <form onSubmit={onSubmit}>
@@ -14,7 +22,7 @@ const Departments = ({ onSubmit, Controller, control }) => {
             >
                 <Controller
                     control={control}
-                    name="department"
+                    name={formFields[0] ?? ''}
                     render={({ field }) => (
                         <Select.Root
                             name={field.name}
@@ -28,7 +36,7 @@ const Departments = ({ onSubmit, Controller, control }) => {
                             </Select.Label>
                             <Select.Control>
                                 <Select.Trigger>
-                                    <Select.ValueText placeholder="Select department" />
+                                    <Select.ValueText placeholder="Select a department" />
                                     <Select.Indicator />
                                 </Select.Trigger>
                             </Select.Control>
@@ -37,10 +45,10 @@ const Departments = ({ onSubmit, Controller, control }) => {
                                     <Select.Content>
                                         {departmentsCollection.items.map((department) => (
                                             <Select.Item
-                                                key={department.value}
+                                                key={department.departmentId}
                                                 item={department}
                                             >
-                                                {department.label}
+                                                <Select.ItemText>{department.displayName}</Select.ItemText>
                                             </Select.Item>
                                         )
                                         )}
@@ -61,14 +69,5 @@ const Departments = ({ onSubmit, Controller, control }) => {
         </form >
     )
 }
-
-const departmentsCollection = createListCollection({
-    items: departments.departments.map((department) => {
-        return {
-            label: department.displayName,
-            value: department.departmentId
-        }
-    })
-})
 
 export default Departments;
