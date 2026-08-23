@@ -6,12 +6,16 @@ import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Flex, Heading, Text } from '@chakra-ui/react';
 
+const PAGE = 0;
+const LIMIT = 20;
+
 const ProductList = () => {
 
     const [deptId, setDeptId] = useState(null);
-    const { register, handleSubmit, control } = useForm();
+    const { handleSubmit, control } = useForm();
 
     const queryClient = useQueryClient();
+
     const { data: itemIds, isLoading, isError } = useQuery({
         queryKey: ['itemIds'],
         queryFn: async () => await API.getAll(deptId),
@@ -31,11 +35,13 @@ const ProductList = () => {
         }
     })
 
+    const queries = itemIds?.objectIDs && itemIds?.objectIDs.slice(PAGE, LIMIT);
+
     const items = useQueries({
-        queries: [21810, 21811, 21812, 21813, 21814, 21815, 21816, 21817, 21818, 21819, 21820].map((itemId) => ({
+        queries: queries?.map((itemId) => ({
             queryKey: ['objectData', itemId],
-            queryFn: async () => await API.getItem(itemId)
-        }))
+            queryFn: async () => await API.getItem(itemId),
+        })) ?? []
     })
 
     return (
@@ -59,13 +65,11 @@ const ProductList = () => {
             </Text>
             <Departments
                 onSubmit={onSubmit}
-                register={register}
                 Controller={Controller}
                 control={control}
             />
 
             <Flex
-                // direction={"column"}
                 gap={"2rem"}
                 wrap={"wrap"}
                 maxW={"80%"}
