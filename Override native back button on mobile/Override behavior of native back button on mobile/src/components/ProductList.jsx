@@ -2,25 +2,21 @@ import ProductCard from './ProductCard';
 import * as API from '../api/api';
 import Departments from './Departments';
 import { useForm, Controller } from 'react-hook-form';
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Flex, Heading, Text } from '@chakra-ui/react';
+import { useGetAll } from '../hooks/useGetDetails';
 
 const PAGE = 0;
-const LIMIT = 20;
+const LIMIT = 5;
 
 const ProductList = () => {
 
     const [deptId, setDeptId] = useState(null);
     const { handleSubmit, control } = useForm();
 
+    const {itemIds} = useGetAll(deptId);
     const queryClient = useQueryClient();
-
-    const { data: itemIds, isLoading, isError } = useQuery({
-        queryKey: ['itemIds'],
-        queryFn: async () => await API.getAll(deptId),
-        enabled: !!deptId,
-    })
 
     const onSubmit = handleSubmit(({departments}) => {
         const id = departments.length && departments[0];
@@ -47,7 +43,7 @@ const ProductList = () => {
     return (
         <>
             <Heading
-                size={"4xl"}
+                size={"4xl"} 
                 fontWeight={"normal"}
                 textAlign={"center"}
                 padding={"3rem"}
