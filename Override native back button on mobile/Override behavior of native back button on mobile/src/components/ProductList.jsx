@@ -1,15 +1,12 @@
 import ProductCard from './ProductCard';
-import * as API from '../api/api';
 import Departments from './Departments';
 import { useForm, Controller } from 'react-hook-form';
-import { useQueries, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Flex, Heading, Text } from '@chakra-ui/react';
 import { useGetAll } from '../hooks/useGetDetails';
 import { useGetItems } from '../hooks/useGetItems';
 import { prepareChunks } from '../helpers/prepareChunks';
-
-const PAGE = 3;
 
 const ProductList = () => {
 

@@ -3,7 +3,7 @@ import { Card, Button, Image, Badge, Group } from "@chakra-ui/react"
 const ProductCard = ({ data }) => {
 
     // do not want to render an item if there is no image
-    if (!data?.primaryImage) {
+    if (!data?.primaryImageSmall) {
         return
     }
 
@@ -42,7 +42,7 @@ const ProductCard = ({ data }) => {
                 <Image
                     objectFit={"cover"}
                     alt={data?.title}
-                    src={data?.primaryImage}
+                    src={data?.primaryImageSmall}
                 >
                 </Image>
                 <Card.Description>
