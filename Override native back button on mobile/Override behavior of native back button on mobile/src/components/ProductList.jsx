@@ -6,19 +6,25 @@ import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Flex, Heading, Text } from '@chakra-ui/react';
 import { useGetAll } from '../hooks/useGetDetails';
+import { useGetItems } from '../hooks/useGetItems';
+import { prepareChunks } from '../helpers/prepareChunks';
 
-const PAGE = 0;
-const LIMIT = 5;
+const PAGE = 3;
 
 const ProductList = () => {
 
     const [deptId, setDeptId] = useState(null);
     const { handleSubmit, control } = useForm();
 
-    const {itemIds} = useGetAll(deptId);
+    const { itemIds } = useGetAll(deptId)
+    const chunks = itemIds?.objectIDs.length
+        ? prepareChunks(itemIds.objectIDs)
+        : []
+
+    
     const queryClient = useQueryClient();
 
-    const onSubmit = handleSubmit(({departments}) => {
+    const onSubmit = handleSubmit(({ departments }) => {
         const id = departments.length && departments[0];
 
         if (!id) return;
@@ -31,19 +37,22 @@ const ProductList = () => {
         }
     })
 
-    const queries = itemIds?.objectIDs && itemIds?.objectIDs.slice(PAGE, LIMIT);
+    const [page, setPage] = useState(0);
 
-    const items = useQueries({
-        queries: queries?.map((itemId) => ({
-            queryKey: ['objectData', itemId],
-            queryFn: async () => await API.getItem(itemId),
-        })) ?? []
-    })
+    const handlePageChange = () => {
+        setPage((curPage) => curPage + 1);
+    }
+
+    const handlePrevPage = () => {
+        setPage((curPage) => curPage - 1);
+    }
+
+    const {items} = useGetItems(chunks[page])
 
     return (
         <>
             <Heading
-                size={"4xl"} 
+                size={"4xl"}
                 fontWeight={"normal"}
                 textAlign={"center"}
                 padding={"3rem"}
@@ -78,6 +87,16 @@ const ProductList = () => {
                     />
                 ))}
             </Flex>
+
+            <button 
+                onClick={handlePageChange}>
+                Next Page
+            </button>
+
+            <button
+                onClick={handlePrevPage}>
+                Previus Page
+            </button>
         </>
     )
 }
