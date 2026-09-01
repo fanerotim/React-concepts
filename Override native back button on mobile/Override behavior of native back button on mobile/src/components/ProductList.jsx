@@ -1,5 +1,6 @@
 import ProductCard from './ProductCard';
 import Departments from './Departments';
+import PagePagination from './Pagination';
 import { useForm, Controller } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -36,11 +37,11 @@ const ProductList = () => {
 
     const [page, setPage] = useState(0);
 
-    const handlePageChange = () => {
+    const handleNext = () => {
         setPage((curPage) => curPage + 1);
     }
 
-    const handlePrevPage = () => {
+    const handlePrev = () => {
         setPage((curPage) => curPage - 1);
     }
 
@@ -84,16 +85,10 @@ const ProductList = () => {
                     />
                 ))}
             </Flex>
-
-            <button 
-                onClick={handlePageChange}>
-                Next Page
-            </button>
-
-            <button
-                onClick={handlePrevPage}>
-                Previus Page
-            </button>
+            <PagePagination 
+                onPrev={handlePrev}
+                onNext={handleNext}
+            />
         </>
     )
 }
