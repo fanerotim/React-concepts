@@ -1,14 +1,14 @@
 import { Pagination, IconButton, ButtonGroup } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
-const PagePagination = ({ onPrev, onNext }) => {
-
+const PagePagination = ({ onChange, pageSize, totalPages }) => {
+    console.log(pageSize)
     return (
         <Pagination.Root
-            count={5}
-            page={1}
-            pageSize={10}
-            onPageChange={onNext}
+            count={totalPages}
+            defaultPage={1}
+            pageSize={pageSize}
+            onPageChange={(e) => onChange(e.page)}
         >
             <ButtonGroup>
                 <Pagination.PrevTrigger asChild>
@@ -18,11 +18,11 @@ const PagePagination = ({ onPrev, onNext }) => {
                 </Pagination.PrevTrigger>
 
                 <Pagination.Items
-                    render={(page) => {
+                    render={(page) => (
                         <IconButton>
                             {page.value}
                         </IconButton>
-                    }}
+                    )}
                 />
 
                 <Pagination.NextTrigger asChild>

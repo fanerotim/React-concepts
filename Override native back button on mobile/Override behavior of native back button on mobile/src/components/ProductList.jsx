@@ -37,12 +37,8 @@ const ProductList = () => {
 
     const [page, setPage] = useState(0);
 
-    const handleNext = () => {
-        setPage((curPage) => curPage + 1);
-    }
-
-    const handlePrev = () => {
-        setPage((curPage) => curPage - 1);
+    const handlePageChange = (page) => {
+        setPage(page + 1);
     }
 
     const {items} = useGetItems(chunks[page])
@@ -86,8 +82,9 @@ const ProductList = () => {
                 ))}
             </Flex>
             <PagePagination 
-                onPrev={handlePrev}
-                onNext={handleNext}
+                onChange={handlePageChange}
+                pageSize={items.length ?? 0}
+                totalPages={chunks.length ?? 0}
             />
         </>
     )
