@@ -1,8 +1,7 @@
 import { Pagination, IconButton, ButtonGroup } from "@chakra-ui/react";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 const PagePagination = ({ onChange, pageSize, totalPages }) => {
-    console.log(pageSize)
     return (
         <Pagination.Root
             count={totalPages}
@@ -12,22 +11,33 @@ const PagePagination = ({ onChange, pageSize, totalPages }) => {
         >
             <ButtonGroup>
                 <Pagination.PrevTrigger asChild>
-                    <IconButton>
-                        <LuChevronLeft />
+                    <IconButton
+                        size={'xs'}
+                        variant={'outline'}
+                        colorPalette={'orange'}
+                    >
+                        <HiChevronLeft />
                     </IconButton>
                 </Pagination.PrevTrigger>
 
-                <Pagination.Items
+                {/* <Pagination.Items
                     render={(page) => (
                         <IconButton>
                             {page.value}
                         </IconButton>
                     )}
+                /> */}
+                <Pagination.PageText
+                    variant={'outline'}
+                    colorPalette={'orange'}
                 />
-
                 <Pagination.NextTrigger asChild>
-                    <IconButton>
-                        <LuChevronRight />
+                    <IconButton
+                        size={'xs'}
+                        variant={'outline'}
+                        colorPalette={'orange'}
+                    >
+                        <HiChevronRight />
                     </IconButton>
                 </Pagination.NextTrigger>
             </ButtonGroup>

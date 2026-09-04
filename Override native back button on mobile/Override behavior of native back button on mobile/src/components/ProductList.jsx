@@ -4,7 +4,7 @@ import PagePagination from './Pagination';
 import { useForm, Controller } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Flex, Heading, Text } from '@chakra-ui/react';
+import { AbsoluteCenter, Flex, Heading, ScrollArea, Text } from '@chakra-ui/react';
 import { useGetAll } from '../hooks/useGetDetails';
 import { useGetItems } from '../hooks/useGetItems';
 import { prepareChunks } from '../helpers/prepareChunks';
@@ -19,7 +19,7 @@ const ProductList = () => {
         ? prepareChunks(itemIds.objectIDs)
         : []
 
-    
+
     const queryClient = useQueryClient();
 
     const onSubmit = handleSubmit(({ departments }) => {
@@ -41,7 +41,7 @@ const ProductList = () => {
         setPage(page + 1);
     }
 
-    const {items} = useGetItems(chunks[page])
+    const { items } = useGetItems(chunks[page])
 
     return (
         <>
@@ -68,24 +68,48 @@ const ProductList = () => {
                 control={control}
             />
 
-            <Flex
-                gap={"2rem"}
-                wrap={"wrap"}
-                maxW={"80%"}
-                margin={"0 auto"}
+
+            <ScrollArea.Root
+                height={'100vh'}
+                minW={'lg'}
+                variant={'hover'}
+                size={'xs'}
+                marginBlock={'5rem'}
+                paddingBlock={'2rem'}
             >
-                {items && items.map(({ data }, i) => (
-                    <ProductCard
-                        key={i}
-                        data={data}
-                    />
-                ))}
-            </Flex>
-            <PagePagination 
+                <ScrollArea.Viewport>
+                    <ScrollArea.Content>
+                        <Flex
+                            gap={"2rem"}
+                            wrap={"wrap"}
+                            maxW={"80%"}
+                            margin={"0 auto"}
+                        >
+                        {items && items.map(({ data }, i) => (
+                            <ProductCard
+                                key={i}
+                                data={data}
+                            />
+                        ))}
+                    </Flex>
+                </ScrollArea.Content>
+            </ScrollArea.Viewport>
+            <ScrollArea.Scrollbar
+                bg={'orange.subtle'}
+            >        
+                <ScrollArea.Thumb 
+                    bg={'orange.solid'}
+                />
+            </ScrollArea.Scrollbar>
+        </ScrollArea.Root >
+
+
+            {(deptId && items.length) && <PagePagination
                 onChange={handlePageChange}
                 pageSize={items.length ?? 0}
                 totalPages={chunks.length ?? 0}
             />
+}
         </>
     )
 }
