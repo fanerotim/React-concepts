@@ -1,10 +1,14 @@
-import { Spinner } from "@chakra-ui/react"
+import { Spinner, VStack, Text } from "@chakra-ui/react"
 
-const Loader = ({size, colorPalette}) => {
+const Loader = ({ size, colorPalette }) => {
     return (
-        <Spinner
-            size={size}
-        />
+        <VStack>
+            <Spinner
+                size={size}
+                color={`${colorPalette}.400`}
+            />
+            <Text>Loading...</Text>
+        </VStack>
     )
 }
 

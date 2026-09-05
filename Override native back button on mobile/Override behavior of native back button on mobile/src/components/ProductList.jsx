@@ -20,8 +20,6 @@ const ProductList = () => {
         ? prepareChunks(itemIds.objectIDs)
         : []
 
-    console.log('this is the value of isLoading', isLoading);
-
     const queryClient = useQueryClient();
 
     const onSubmit = handleSubmit(({ departments }) => {
@@ -43,7 +41,7 @@ const ProductList = () => {
         setPage(page);
     }
 
-    const { items } = useGetItems(chunks[page], isLoading)
+    const { items, isFetchingItems } = useGetItems(chunks[page], isLoading)
 
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
     // Make Select smaller
@@ -93,7 +91,7 @@ const ProductList = () => {
                             margin={"0 auto"}
                             justifyContent={'center'}
                         >
-                            {items && !isLoading 
+                            {items && !isFetchingItems && !isLoading 
                                 ? items.map(({ data }, i) => (
                                 <ProductCard
                                     key={i}

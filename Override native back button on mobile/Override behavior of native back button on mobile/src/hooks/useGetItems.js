@@ -11,7 +11,12 @@ export const useGetItems = (chunk, isLoading) => {
         enabled: isLoading
     })
 
+    const isFetchingItems = items.length 
+        ? items.every(item => item.isFetching) 
+        : false;
+
     return {
-        items
+        items,
+        isFetchingItems
     }
 }
