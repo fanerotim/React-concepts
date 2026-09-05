@@ -70,7 +70,7 @@ const ProductList = () => {
 
 
             <ScrollArea.Root
-                height={'100vh'}
+                height={'80vh'}
                 minW={'lg'}
                 variant={'hover'}
                 size={'xs'}
@@ -85,31 +85,39 @@ const ProductList = () => {
                             maxW={"80%"}
                             margin={"0 auto"}
                         >
-                        {items && items.map(({ data }, i) => (
-                            <ProductCard
-                                key={i}
-                                data={data}
-                            />
-                        ))}
+                            {items && items.map(({ data }, i) => (
+                                <ProductCard
+                                    key={i}
+                                    data={data}
+                                />
+                            ))}
+                        </Flex>
+                    </ScrollArea.Content>
+                </ScrollArea.Viewport>
+                <ScrollArea.Scrollbar
+                    bg={'orange.subtle'}
+                >
+                    <ScrollArea.Thumb
+                        bg={'orange.solid'}
+                    />
+                </ScrollArea.Scrollbar>
+
+                {(deptId && items.length) &&
+
+                    <Flex
+                        justify={'center'}
+                        paddingBlock={'3rem'}
+                    >
+                        <PagePagination
+                            onChange={handlePageChange}
+                            pageSize={items.length ?? 0}
+                            totalPages={chunks.length ?? 0}
+                        />
                     </Flex>
-                </ScrollArea.Content>
-            </ScrollArea.Viewport>
-            <ScrollArea.Scrollbar
-                bg={'orange.subtle'}
-            >        
-                <ScrollArea.Thumb 
-                    bg={'orange.solid'}
-                />
-            </ScrollArea.Scrollbar>
-        </ScrollArea.Root >
+                }
+            </ScrollArea.Root >
 
 
-            {(deptId && items.length) && <PagePagination
-                onChange={handlePageChange}
-                pageSize={items.length ?? 0}
-                totalPages={chunks.length ?? 0}
-            />
-}
         </>
     )
 }

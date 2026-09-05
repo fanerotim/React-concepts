@@ -7,6 +7,7 @@ const PagePagination = ({ onChange, pageSize, totalPages }) => {
             count={totalPages}
             defaultPage={1}
             pageSize={pageSize}
+            key={'xs'}
             onPageChange={(e) => onChange(e.page)}
         >
             <ButtonGroup>
@@ -28,8 +29,12 @@ const PagePagination = ({ onChange, pageSize, totalPages }) => {
                     )}
                 /> */}
                 <Pagination.PageText
-                    variant={'outline'}
-                    colorPalette={'orange'}
+                    fontWeight={'light'}
+                    bg={'purple.subtle'}
+                    paddingInline={'2'}
+                    paddingBlock={'1'}
+                    borderRadius={'10%'}
+                    fontSize={'xs'}
                 />
                 <Pagination.NextTrigger asChild>
                     <IconButton
