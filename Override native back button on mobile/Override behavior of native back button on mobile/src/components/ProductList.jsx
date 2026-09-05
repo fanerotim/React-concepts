@@ -2,8 +2,6 @@ import ProductCard from './ProductCard';
 import Departments from './Departments';
 import PagePagination from './Pagination';
 import Loader from './Loader';
-import { useForm, Controller } from 'react-hook-form';
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Flex, Heading, ScrollArea, Text } from '@chakra-ui/react';
 import { useGetAll } from '../hooks/useGetDetails';
@@ -11,29 +9,12 @@ import { useGetItems } from '../hooks/useGetItems';
 import { prepareChunks } from '../helpers/prepareChunks';
 
 const ProductList = () => {
-
     const [deptId, setDeptId] = useState(null);
-    const { handleSubmit, control } = useForm();
-
     const { itemIds, isLoading } = useGetAll(deptId)
+    
     const chunks = itemIds?.objectIDs.length
         ? prepareChunks(itemIds.objectIDs)
         : []
-
-    const queryClient = useQueryClient();
-
-    const onSubmit = handleSubmit(({ departments }) => {
-        const id = departments.length && departments[0];
-
-        if (!id) return;
-
-        setDeptId(() => id);
-
-        if (deptId !== id) {
-            // invalidate cache when department id changes
-            queryClient.invalidateQueries({ queryKey: ['itemIds'] });
-        }
-    })
 
     const [page, setPage] = useState(0);
 
@@ -45,7 +26,6 @@ const ProductList = () => {
 
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
     // Make Select smaller
-    // Add Spinner on Page change
     // Improve Card styling
 
     return (
@@ -69,9 +49,8 @@ const ProductList = () => {
             </Text>
 
             <Departments
-                onSubmit={onSubmit}
-                Controller={Controller}
-                control={control}
+                deptId={deptId}
+                setDeptId={setDeptId}
             />
 
             <ScrollArea.Root
