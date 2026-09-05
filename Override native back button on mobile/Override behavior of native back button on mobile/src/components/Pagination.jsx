@@ -21,13 +21,6 @@ const PagePagination = ({ onChange, pageSize, totalPages }) => {
                     </IconButton>
                 </Pagination.PrevTrigger>
 
-                {/* <Pagination.Items
-                    render={(page) => (
-                        <IconButton>
-                            {page.value}
-                        </IconButton>
-                    )}
-                /> */}
                 <Pagination.PageText
                     fontWeight={'light'}
                     bg={'purple.subtle'}

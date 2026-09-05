@@ -1,10 +1,11 @@
 import ProductCard from './ProductCard';
 import Departments from './Departments';
 import PagePagination from './Pagination';
+import Loader from './Loader';
 import { useForm, Controller } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { AbsoluteCenter, Flex, Heading, ScrollArea, Text } from '@chakra-ui/react';
+import { Flex, Heading, ScrollArea, Text } from '@chakra-ui/react';
 import { useGetAll } from '../hooks/useGetDetails';
 import { useGetItems } from '../hooks/useGetItems';
 import { prepareChunks } from '../helpers/prepareChunks';
@@ -14,11 +15,12 @@ const ProductList = () => {
     const [deptId, setDeptId] = useState(null);
     const { handleSubmit, control } = useForm();
 
-    const { itemIds } = useGetAll(deptId)
+    const { itemIds, isLoading } = useGetAll(deptId)
     const chunks = itemIds?.objectIDs.length
         ? prepareChunks(itemIds.objectIDs)
         : []
 
+    console.log('this is the value of isLoading', isLoading);
 
     const queryClient = useQueryClient();
 
@@ -38,10 +40,15 @@ const ProductList = () => {
     const [page, setPage] = useState(0);
 
     const handlePageChange = (page) => {
-        setPage(page + 1);
+        setPage(page);
     }
 
-    const { items } = useGetItems(chunks[page])
+    const { items } = useGetItems(chunks[page], isLoading)
+
+    // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
+    // Make Select smaller
+    // Add Spinner on Page change
+    // Improve Card styling
 
     return (
         <>
@@ -62,12 +69,12 @@ const ProductList = () => {
             >
                 You can browse the free API here and click on link to view items on the official website for more information
             </Text>
+
             <Departments
                 onSubmit={onSubmit}
                 Controller={Controller}
                 control={control}
             />
-
 
             <ScrollArea.Root
                 height={'80vh'}
@@ -84,13 +91,21 @@ const ProductList = () => {
                             wrap={"wrap"}
                             maxW={"80%"}
                             margin={"0 auto"}
+                            justifyContent={'center'}
                         >
-                            {items && items.map(({ data }, i) => (
+                            {items && !isLoading 
+                                ? items.map(({ data }, i) => (
                                 <ProductCard
                                     key={i}
                                     data={data}
                                 />
-                            ))}
+                            ))
+                                : 
+                                <Loader 
+                                    size={'xl'}
+                                    colorPalette={'red'}
+                                />
+                            }
                         </Flex>
                     </ScrollArea.Content>
                 </ScrollArea.Viewport>
@@ -116,8 +131,6 @@ const ProductList = () => {
                     </Flex>
                 }
             </ScrollArea.Root >
-
-
         </>
     )
 }

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 export const useGetAll = (deptId) => {
 
     // TODO: debug why isLoading is always false, even if network is throttled
-    const { data: itemIds, status } = useQuery({
+    const { data: itemIds, isLoading } = useQuery({
         queryKey: ['itemIds'],
         queryFn: async () => await API.getAll(deptId),
         enabled: !!deptId,
@@ -12,6 +12,7 @@ export const useGetAll = (deptId) => {
 
     return {
         itemIds,
+        isLoading
     }
 }
 
