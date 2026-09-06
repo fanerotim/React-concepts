@@ -7,6 +7,7 @@ export const useGetItems = (chunk) => {
         queries: chunk?.map((itemId) => ({
             queryKey: ['objectData', itemId],
             queryFn: () => API.getItem(itemId),
+            staleTime: 60 * 60 * 24 * 1000
         })) ?? []
     })
 
