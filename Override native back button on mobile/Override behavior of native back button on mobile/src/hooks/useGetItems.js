@@ -1,22 +1,26 @@
-import { useQueries } from "@tanstack/react-query"
+import { useQueries, useQueryClient } from "@tanstack/react-query"
 import * as API from '../api/api';
 
-export const useGetItems = (chunk, isLoading) => {
-    
+export const useGetItems = (chunk) => {
+
     const items = useQueries({
         queries: chunk?.map((itemId) => ({
             queryKey: ['objectData', itemId],
-            queryFn: async () => await API.getItem(itemId),
-        })) ?? [],
-        enabled: isLoading
+            queryFn: () => API.getItem(itemId),
+        })) ?? []
     })
 
-    const isFetchingItems = items.length 
-        ? items.every(item => item.isFetching) 
+    const isLoadingItems = items.length 
+        ? items.every(item => item.isLoading) 
+        : false;
+
+    const isItemError = items.length
+        ? items.find(item => item.isError)
         : false;
 
     return {
         items,
-        isFetchingItems
+        isLoadingItems,
+        isItemError
     }
 }

@@ -10,8 +10,9 @@ import { prepareChunks } from '../helpers/prepareChunks';
 
 const ProductList = () => {
     const [deptId, setDeptId] = useState(null);
-    const { itemIds, isLoading } = useGetAll(deptId)
-    
+    // TODO: Handle isError case
+    const { isError, isLoading, itemIds } = useGetAll(deptId)
+
     const chunks = itemIds?.objectIDs.length
         ? prepareChunks(itemIds.objectIDs)
         : []
@@ -19,14 +20,15 @@ const ProductList = () => {
     const [page, setPage] = useState(0);
 
     const handlePageChange = (page) => {
-        setPage(page);
+        setPage(() => page);
     }
-
-    const { items, isFetchingItems } = useGetItems(chunks[page], isLoading)
-
+    const { isItemError, isLoadingItems, items } = useGetItems(chunks[page])
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
     // Make Select smaller
     // Improve Card styling
+
+    // TODO:
+    // Handle isItemError case
 
     return (
         <>
@@ -49,8 +51,8 @@ const ProductList = () => {
             </Text>
 
             <Departments
-                deptId={deptId}
                 setDeptId={setDeptId}
+                isLoading={isLoading}
             />
 
             <ScrollArea.Root
@@ -70,15 +72,15 @@ const ProductList = () => {
                             margin={"0 auto"}
                             justifyContent={'center'}
                         >
-                            {items && !isFetchingItems && !isLoading 
+                            {items && !isLoadingItems && !isLoading
                                 ? items.map(({ data }, i) => (
-                                <ProductCard
-                                    key={i}
-                                    data={data}
-                                />
-                            ))
-                                : 
-                                <Loader 
+                                    <ProductCard
+                                        key={i}
+                                        data={data}
+                                    />
+                                ))
+                                :
+                                <Loader
                                     size={'xl'}
                                     colorPalette={'red'}
                                 />

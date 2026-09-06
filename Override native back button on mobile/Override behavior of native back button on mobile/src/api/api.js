@@ -18,6 +18,12 @@ const getItem = async (objectId) => {
 const getAll = async (departmentId) => {
     const url = `${import.meta.env.VITE_API_BASE_URL}/objects?departmentIds=${departmentId}`;
     const response = await fetch(url);
+
+    if (response.status !== 200 || !response.ok) {
+        console.log(response);
+        throw new Error('Network request failed. Please try again.')
+    }
+
     return await response.json();
 }
 

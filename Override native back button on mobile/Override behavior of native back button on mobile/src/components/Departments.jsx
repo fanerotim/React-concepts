@@ -10,8 +10,8 @@ const departmentsCollection = createListCollection({
     itemToValue: (department) => department.departmentId
 })
 
-const Departments = ({deptId, setDeptId}) => {
-    const {onSubmit, Controller, control} = useDepartment(deptId, setDeptId)
+const Departments = ({setDeptId, isLoading}) => {
+    const {onSubmit, Controller, control} = useDepartment(setDeptId)
     
     return (
         <form onSubmit={onSubmit}>
@@ -61,6 +61,7 @@ const Departments = ({deptId, setDeptId}) => {
                     }
                 />
                 <Button
+                    disabled={isLoading}
                     type="submit"
                     size={"xs"}
                     alignSelf={"end"}
