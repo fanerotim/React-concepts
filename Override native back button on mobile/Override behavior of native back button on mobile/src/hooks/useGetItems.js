@@ -1,4 +1,4 @@
-import { useQueries, useQueryClient } from "@tanstack/react-query"
+import { useQueries } from "@tanstack/react-query"
 import * as API from '../api/api';
 
 export const useGetItems = (chunk) => {
