@@ -1,7 +1,11 @@
+import { useGetItems } from "../hooks/useGetItems";
 import { Pagination, IconButton, ButtonGroup } from "@chakra-ui/react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
-const PagePagination = ({ onChange, pageSize, totalPages }) => {
+const PagePagination = ({ onChange, pageSize, totalPages, chunks, page }) => {
+    // prefetch items
+    useGetItems(chunks[page + 1])
+
     return (
         <Pagination.Root
             count={totalPages}

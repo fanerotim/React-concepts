@@ -106,6 +106,8 @@ const ProductList = () => {
                             onChange={handlePageChange}
                             pageSize={items.length ?? 0}
                             totalPages={chunks.length ?? 0}
+                            chunks={chunks}
+                            page={page}
                         />
                     </Flex>
                 }
