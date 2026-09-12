@@ -13,16 +13,16 @@ const ProductList = () => {
     // TODO: Handle isError case
     const { isError, isLoading, itemIds } = useGetAll(deptId)
 
-    const chunks = itemIds?.objectIDs.length
-        ? prepareChunks(itemIds.objectIDs)
-        : []
-
+    const chunksOfData = itemIds?.objectIDs.length
+    ? prepareChunks(itemIds.objectIDs)
+    : []
+    
     const [page, setPage] = useState(0);
 
     const handlePageChange = (page) => {
         setPage(() => page);
     }
-    const { isItemError, isLoadingItems, items } = useGetItems(chunks[page])
+    const { isItemError, isLoadingItems, items } = useGetItems(chunksOfData[page])
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
     // Make Select smaller
     // Improve Card styling
@@ -104,9 +104,7 @@ const ProductList = () => {
                     >
                         <PagePagination
                             onChange={handlePageChange}
-                            pageSize={items.length ?? 0}
-                            totalPages={chunks.length ?? 0}
-                            chunks={chunks}
+                            chunksOfData={chunksOfData}
                             page={page}
                         />
                     </Flex>
