@@ -16,7 +16,7 @@ const getItem = async (objectId) => {
 }
 
 const getAll = async (departmentId) => {
-    const url = `${import.meta.env.VITE_API_BASE_URL}/search?departmentIds=${departmentId}&q=hasImage=true`;
+    const url = `${import.meta.env.VITE_API_BASE_URL}/search?departmentId=${departmentId}&q=hasImage=true`;
     const response = await fetch(url);
 
     if (response.status !== 200 || !response.ok) {
