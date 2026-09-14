@@ -19,8 +19,9 @@ const ProductList = () => {
     
     const [page, setPage] = useState(0);
 
+    // Pagination component returns 1 as first page, but we need to start from 0, which will be first page
     const handlePageChange = (page) => {
-        setPage(() => page);
+        setPage(() => page - 1);
     }
     const { isItemError, isLoadingItems, items } = useGetItems(chunksOfData[page])
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
