@@ -2,7 +2,7 @@ import ProductCard from './ProductCard';
 import Departments from './Departments';
 import PagePagination from './Pagination';
 import Loader from './Loader';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Flex, Heading, ScrollArea, Text } from '@chakra-ui/react';
 import { useGetAll } from '../hooks/useGetDetails';
 import { useGetItems } from '../hooks/useGetItems';
@@ -14,14 +14,15 @@ const ProductList = () => {
     const { isError, isLoading, itemIds } = useGetAll(deptId)
 
     const chunksOfData = itemIds?.objectIDs.length
-    ? prepareChunks(itemIds.objectIDs)
-    : []
-    
-    const [page, setPage] = useState(0);
+        ? prepareChunks(itemIds.objectIDs)
+        : []
 
+    const scrollRef = useRef(null);
+    const [page, setPage] = useState(0);
     // Pagination component returns 1 as first page, but we need to start from 0, which will be first page
     const handlePageChange = (page) => {
         setPage(() => page - 1);
+        scrollRef.current.scrollTo({top: 0});
     }
     const { isItemError, isLoadingItems, items } = useGetItems(chunksOfData[page])
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
@@ -56,6 +57,7 @@ const ProductList = () => {
                 isLoading={isLoading}
             />
 
+            {/* TODO: think if ScrollArea needs to be extracted into its own component */}
             <ScrollArea.Root
                 height={'80vh'}
                 minW={'lg'}
@@ -64,7 +66,10 @@ const ProductList = () => {
                 marginBlock={'5rem'}
                 paddingBlock={'2rem'}
             >
-                <ScrollArea.Viewport>
+                <ScrollArea.Viewport
+                    ref={scrollRef}
+                    scrollBehavior={'smooth'}    
+                >
                     <ScrollArea.Content>
                         <Flex
                             gap={"2rem"}
@@ -110,7 +115,7 @@ const ProductList = () => {
                         />
                     </Flex>
                 }
-            </ScrollArea.Root >
+            </ScrollArea.Root>
         </>
     )
 }
