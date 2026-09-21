@@ -22,16 +22,15 @@ const ProductList = () => {
     // Pagination component returns 1 as first page, but we need to start from 0, which will be first page
     const handlePageChange = (page) => {
         setPage(() => page - 1);
-        scrollRef.current.scrollTo({top: 0});
+        scrollRef.current.scrollTo({ top: 0 });
     }
     const { isItemError, isLoadingItems, items } = useGetItems(chunksOfData[page])
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
-    // Make Select smaller
     // Improve Card styling
 
     // TODO:
     // Handle isItemError case
-
+    console.log(items);
     return (
         <>
             <Heading
@@ -57,65 +56,41 @@ const ProductList = () => {
                 isLoading={isLoading}
             />
 
-            {/* TODO: think if ScrollArea needs to be extracted into its own component */}
-            <ScrollArea.Root
-                height={'80vh'}
-                minW={'lg'}
-                variant={'hover'}
-                size={'xs'}
-                marginBlock={'5rem'}
-                paddingBlock={'2rem'}
+            <Flex
+                gap={"2rem"}
+                wrap={"wrap"}
+                maxW={"80%"}
+                margin={"0 auto"}
+                justifyContent={'center'}
             >
-                <ScrollArea.Viewport
-                    ref={scrollRef}
-                    scrollBehavior={'smooth'}    
-                >
-                    <ScrollArea.Content>
-                        <Flex
-                            gap={"2rem"}
-                            wrap={"wrap"}
-                            maxW={"80%"}
-                            margin={"0 auto"}
-                            justifyContent={'center'}
-                        >
-                            {items && !isLoadingItems && !isLoading
-                                ? items.map(({ data }, i) => (
-                                    <ProductCard
-                                        key={i}
-                                        data={data}
-                                    />
-                                ))
-                                :
-                                <Loader
-                                    size={'xl'}
-                                    colorPalette={'red'}
-                                />
-                            }
-                        </Flex>
-                    </ScrollArea.Content>
-                </ScrollArea.Viewport>
-                <ScrollArea.Scrollbar
-                    bg={'orange.subtle'}
-                >
-                    <ScrollArea.Thumb
-                        bg={'orange.solid'}
-                    />
-                </ScrollArea.Scrollbar>
-
-                {(deptId && items.length) &&
-
-                    <Flex
-                        justify={'center'}
-                        paddingBlock={'3rem'}
-                    >
-                        <PagePagination
-                            onChange={handlePageChange}
-                            chunksOfData={chunksOfData}
-                            page={page}
+                {items && !isLoadingItems && !isLoading
+                    ? items.map(({ data }, i) => (
+                        <ProductCard
+                            key={i}
+                            data={data}
                         />
-                    </Flex>
+                    ))
+                    :
+                    <Loader
+                        size={'xl'}
+                        colorPalette={'red'}
+                    />
                 }
-            </ScrollArea.Root>
+            </Flex>
+
+            {(deptId && items.length) &&
+
+                <Flex
+                    justify={'center'}
+                    paddingBlock={'3rem'}
+                >
+                    <PagePagination
+                        onChange={handlePageChange}
+                        chunksOfData={chunksOfData}
+                        page={page}
+                    />
+                </Flex>
+            }
         </>
     )
 }
