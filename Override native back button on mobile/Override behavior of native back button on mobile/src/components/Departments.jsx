@@ -1,6 +1,7 @@
 import { Select, Button, Flex, Portal, createListCollection } from "@chakra-ui/react"
 import { departments } from "../api/departments";
 import { useDepartment } from "../hooks/useDepartment";
+import { useState } from "react";
 
 // data needs to be converted into a ListCollection as this is how the Select Component works
 // in TypeScript we should be able to pass a type to the createListCollection based on its doc: https://ark-ui.com/docs/collections/tree-collection 
@@ -10,9 +11,10 @@ const departmentsCollection = createListCollection({
     itemToValue: (department) => department.departmentId
 })
 
-const Departments = ({setDeptId, isLoading}) => {
-    const {onSubmit, Controller, control} = useDepartment(setDeptId)
-    
+const Departments = ({ setDeptId, isLoading }) => {
+    const { onSubmit, Controller, control } = useDepartment(setDeptId);
+    const [isSelectOpen, setIsSelectOpen] = useState(false);
+
     return (
         <form onSubmit={onSubmit}>
             <Flex
@@ -30,25 +32,45 @@ const Departments = ({setDeptId, isLoading}) => {
                             name={field.name}
                             value={field.value}
                             onValueChange={({ value }) => field.onChange(value)}
+                            onOpenChange={({open}) => {
+                                setIsSelectOpen(open)
+                            }}
                             w={"xs"}
                             collection={departmentsCollection}
                         >
-                            <Select.Label>
+                            <Select.Label
+                                fontSize={'xs'}
+                            >
                                 Choose a department
                             </Select.Label>
                             <Select.Control>
-                                <Select.Trigger>
-                                    <Select.ValueText placeholder="Select a department" />
+                                <Select.Trigger
+                                    bg={'orange.300'}
+                                    color={'black'}
+                                >
+                                    <Select.ValueText
+                                        fontSize={'xs'}
+                                        placeholder="Select a department"
+                                    />
                                     <Select.Indicator />
                                 </Select.Trigger>
                             </Select.Control>
                             <Portal>
                                 <Select.Positioner>
-                                    <Select.Content>
+                                    <Select.Content
+                                        bg={'red.100/40'}
+                                    >
                                         {departmentsCollection.items.map((department) => (
                                             <Select.Item
                                                 key={department.departmentId}
                                                 item={department}
+                                                color={'brown'}
+                                                fontSize={'xs'}
+                                                _hover={{
+                                                    cursor: 'pointer',
+                                                    bg: 'yellow.200',
+                                                    fontWeight: 'lighter'
+                                                }}
                                             >
                                                 <Select.ItemText>{department.displayName}</Select.ItemText>
                                             </Select.Item>
@@ -60,14 +82,16 @@ const Departments = ({setDeptId, isLoading}) => {
                         </Select.Root>)
                     }
                 />
-                <Button
+                {!isSelectOpen && <Button
                     disabled={isLoading}
                     type="submit"
                     size={"xs"}
                     alignSelf={"end"}
+                    bg={'yellow.200'}
+                    color={'black'}
                 >
                     Submit
-                </Button>
+                </Button>}
             </Flex>
         </form >
     )
