@@ -17,12 +17,12 @@ const ProductList = () => {
         ? prepareChunks(itemIds.objectIDs)
         : []
 
-    const scrollRef = useRef(null);
+    // const scrollRef = useRef(null);
     const [page, setPage] = useState(0);
     // Pagination component returns 1 as first page, but we need to start from 0, which will be first page
     const handlePageChange = (page) => {
         setPage(() => page - 1);
-        scrollRef.current.scrollTo({ top: 0 });
+        window.scrollTo({ top: 120, behavior: 'smooth' });
     }
     const { isItemError, isLoadingItems, items } = useGetItems(chunksOfData[page])
     // TODO: Consider moving pagination and theme toggle switch into a sidebar on desktop
@@ -30,7 +30,7 @@ const ProductList = () => {
 
     // TODO:
     // Handle isItemError case
-    console.log(items);
+    console.log(items)
     return (
         <>
             <Heading
